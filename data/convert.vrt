@@ -3,8 +3,14 @@
         <SrcDataSource>road_new.csv</SrcDataSource>
         <GeometryType>wkbLineString</GeometryType>
         <Field name="id" src="id" />
+        <Field name="_uid_" src="_uid_" />
         <Field name="source" src="source" />
         <Field name="target" src="target" />
+        <Field name="cost" src="cost" />
+        <Field name="x1" src="x1" />
+        <Field name="y1" src="y1" />
+        <Field name="x2" src="x2" />
+        <Field name="y2" src="y2" />
         <GeometryField encoding="WKT" field='WKT' > </GeometryField >
     </OGRVRTLayer>
 </OGRVRTDataSource>

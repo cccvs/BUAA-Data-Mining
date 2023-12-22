@@ -1,6 +1,6 @@
 .idea
 data/ubodt.txt
-data/mr.txt
+data/mr.csv
 data/node_new*
 data/road_new*
 data/traj_new*

@@ -2,10 +2,11 @@ import pandas as pd
 import geopandas as gpd
 import numpy as np
 
-df = pd.read_csv("./data/mr.txt", sep=";")
+df = pd.read_csv("./data/mr.csv", sep=";")
 
 
 def extract_cpath(cpath):
+    print(type(cpath), cpath)
     if cpath == "":
         return []
     return [int(s) for s in cpath.split(",")]
