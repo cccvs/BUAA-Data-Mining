@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bouldin_score
 import seaborn as sns
 import folium
+from sklearn.manifold import MDS
 
 
 def inrange(lon, lat):
@@ -66,10 +67,6 @@ def clean_and_output_data():
 
 # ===calculate trajsimi distance matrix for trajsimi learning===
 def traj_simi_computation(fn_name='hausdorff'):
-    # 1. read trajs from file, and split to 3 datasets, and data normalization
-    # 2. calculate simi in 3 datasets separately.
-    # 3. dump 3 datasets into files
-
     logging.info("traj_simi_computation starts. fn={}".format(fn_name))
     _time = time.time()
 
@@ -82,10 +79,17 @@ def traj_simi_computation(fn_name='hausdorff'):
     # 2.
     fn = _get_simi_fn(fn_name)
     simi_matrix = _simi_matrix(fn, trajs)  # [ [simi, simi, ... ], ... ]
+    simi_matrix = np.triu(simi_matrix) + np.triu(simi_matrix, 1).T
+    # 3.
     _output_file = '{}_traj_simi_dict_{}.pkl'.format(Config.dataset_file, fn_name)
     with open(_output_file, 'wb') as fh:
         tup = simi_matrix
         pickle.dump(tup, fh, protocol=pickle.HIGHEST_PROTOCOL)
+
+    simi_df = pd.DataFrame(simi_matrix)
+    # Save DataFrame to Excel file
+    excel_output_file = '{}_traj_simi_{}.xlsx'.format(Config.dataset_file, fn_name)
+    simi_df.to_excel(excel_output_file, index=False)
     return
 
 
@@ -94,12 +98,16 @@ def traj_clustering():
     trajs = _normalization([trajs])[0]
     simi_matrix = pd.read_pickle('{}_traj_simi_dict_edwp.pkl'.format(Config.dataset_file))
     n_cluster = 10  # 尝试不同的簇数量
-    spectral_clustering = SpectralClustering(n_clusters=n_cluster, affinity='precomputed', random_state=42)
+    spectral_clustering = SpectralClustering(n_clusters=n_cluster, affinity='nearest_neighbors', n_neighbors=50, random_state=42)
     clusters = spectral_clustering.fit_predict(simi_matrix)
     _output_file = '{}_traj_cluster.pkl'.format(Config.dataset_file)
     with open(_output_file, 'wb') as fh:
         tup = clusters
         pickle.dump(tup, fh, protocol=pickle.HIGHEST_PROTOCOL)
+    cluster_df = pd.DataFrame(clusters)
+    # Save DataFrame to Excel file
+    excel_output_file = '{}_traj_cluster.xlsx'.format(Config.dataset_file)
+    cluster_df.to_excel(excel_output_file, index=False)
     return trajs, simi_matrix, clusters
 
 
@@ -173,7 +181,7 @@ def plot_similarity_matrix_heatmap(trajs, simi_matrix, clusters, num_trajectorie
     # 创建热图
     plt.figure(figsize=(14, 8))
     sns.heatmap(selected_simi_matrix, annot=True, fmt=".2f", cmap="YlGnBu", xticklabels=random_indices, yticklabels=random_indices)
-    plt.title("Similarity Matrix Heatmap with Clusters")
+    plt.title("Distance Matrix by EWpD")
     plt.savefig(f'cluster_heatmap.png')
     plt.close()
 
@@ -190,15 +198,27 @@ def plot_similarity_matrix_heatmap(trajs, simi_matrix, clusters, num_trajectorie
     plt.savefig(f'cluster_table.png')
     plt.close()
 
-    # 创建轨迹图
-    trajs = trajs.wgs_seq.tolist()
-    m = folium.Map(location=[trajs[0][0][1], trajs[0][0][0]], zoom_start=13)
-    index = 0
-    print(np.unique(selected_clusters))
-    for i, cluster in zip(random_indices, selected_clusters):
-        color = sns.color_palette("husl", n_colors=10)[cluster]
-        folium.PolyLine(trajs[i], color=color, weight=10, opacity=1).add_to(m)
-    m.save(f'trajectories_with_clusters.html')
+    mds = MDS(n_components=2, dissimilarity='euclidean', random_state=42)
+    embedded_points = mds.fit_transform(simi_matrix)
+
+    # 创建散点图
+    plt.figure(figsize=(12, 8))
+    sns.scatterplot(x=embedded_points[:, 0], y=embedded_points[:, 1],
+                    hue=clusters, palette="viridis", s=50, alpha=0.7)
+    # 设置图形属性
+    plt.title('Trajectory Clustering Scatter Plot with Distance Matrix (MDS)')
+    plt.savefig(f'cluster_scatter.png')
+    plt.close()
+
+#     # 创建轨迹图
+#     trajs = trajs.wgs_seq.tolist()
+#     m = folium.Map(location=[trajs[0][0][1], trajs[0][0][0]], zoom_start=13)
+#     index = 0
+#     print(np.unique(selected_clusters))
+#     for i, cluster in zip(random_indices, selected_clusters):
+#         color = sns.color_palette("husl", n_colors=20)[cluster]
+#         folium.PolyLine(trajs[i], color=color, weight=10, opacity=1).add_to(m)
+#     m.save(f'trajectories_with_clusters.html')
 
 
 # async operator
