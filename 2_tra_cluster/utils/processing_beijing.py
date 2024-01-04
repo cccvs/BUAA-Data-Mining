@@ -207,6 +207,8 @@ def plot_similarity_matrix_heatmap(trajs, simi_matrix, clusters, num_trajectorie
                     hue=clusters, palette="viridis", s=50, alpha=0.7)
     # 设置图形属性
     plt.title('Trajectory Clustering Scatter Plot with Distance Matrix (MDS)')
+    plt.xlabel('MDS Dimension 1')
+    plt.ylabel('MDS Dimension 2')
     plt.savefig(f'cluster_scatter.png')
     plt.close()
 
