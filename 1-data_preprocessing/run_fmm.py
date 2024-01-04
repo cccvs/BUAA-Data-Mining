@@ -7,7 +7,7 @@ from fmm import (
     UBODTGenAlgorithm,
 )
 
-network = Network("./data/road_new.shp")
+network = Network("./data/road_split.shp")
 print("Nodes {} edges {}".format(network.get_node_count(), network.get_edge_count()))
 graph = NetworkGraph(network)
 # ubodt_gen = UBODTGenAlgorithm(network, graph)
@@ -25,7 +25,7 @@ from fmm import (
 )
 
 
-network = Network("./data/road_new.shp")
+network = Network("./data/road_split.shp")
 graph = NetworkGraph(network)
 ubodt = UBODT.read_ubodt_csv("./data/ubodt.txt")
 model = FastMapMatch(network, graph, ubodt)

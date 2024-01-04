@@ -1,2 +1,2 @@
 #!/bin/bash
-ogr2ogr -f "ESRI Shapefile" road_new.shp convert.vrt
+ogr2ogr -f "ESRI Shapefile" road_split.shp convert.vrt

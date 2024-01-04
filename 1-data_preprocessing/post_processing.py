@@ -17,7 +17,7 @@ print(df)
 
 all_edge_ids = np.unique(np.hstack(df.cpath_list)).tolist()
 
-network_gdf = gpd.read_file("./data/road_new.shp")
+network_gdf = gpd.read_file("./data/road_split.shp")
 network_gdf.id = network_gdf.id.astype(int)
 network_gdf.head()
 

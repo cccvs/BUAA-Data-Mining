@@ -1,7 +1,10 @@
 .idea
 data/ubodt.txt
 data/mr.csv
-data/node_new*
-data/road_new*
+data/node_split*
+data/road_split*
 data/traj_new*
+data/mr*
 test.ipynb
+jump.usr
+jump.geo

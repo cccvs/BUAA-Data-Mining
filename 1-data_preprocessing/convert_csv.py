@@ -23,7 +23,7 @@ coord_dict = {coord: i for i, coord in enumerate(coord_list)}
 df_node = pd.DataFrame(coord_dict.items(), columns=["coordinates", "id"])
 df_node["WKT"] = df_node["coordinates"].apply(lambda t: Point(t).wkt)
 df_node.drop(["coordinates"], axis=1, inplace=True)
-df_node.to_csv("./data/node_new.csv", index=False)
+df_node.to_csv("./data/node_split.csv", index=False)
 
 # Construct new roads
 series_list = []
@@ -44,24 +44,24 @@ for i, row in df_road_old.iterrows():
     max_error_rate = max(max_error_rate, error_rate)
     print(f"Road {i}, distance error: {total_dist - row['length']}, error rate: {error_rate * 100}%")
 print(f"Max error rate: {max_error_rate * 100}%")
-df_road_new = pd.concat(series_list, axis=1, ignore_index=True).T
-df_road_new.reset_index(drop=False, inplace=True)
-df_road_new.rename(columns={"index": "id"}, inplace=True)
-df_road_new["_uid_"] = df_road_new["id"]
-df_road_new["WKT"] = df_road_new["geometry"].apply(lambda t: t.wkt)
-df_road_new["source"] = df_road_new["geometry"].apply(
+df_road_split = pd.concat(series_list, axis=1, ignore_index=True).T
+df_road_split.reset_index(drop=False, inplace=True)
+df_road_split.rename(columns={"index": "id"}, inplace=True)
+df_road_split["_uid_"] = df_road_split["id"]
+df_road_split["WKT"] = df_road_split["geometry"].apply(lambda t: t.wkt)
+df_road_split["source"] = df_road_split["geometry"].apply(
     lambda t: coord_dict[(t.xy[0][0], t.xy[1][0])]
 )
-df_road_new["target"] = df_road_new["geometry"].apply(
+df_road_split["target"] = df_road_split["geometry"].apply(
     lambda t: coord_dict[(t.xy[0][-1], t.xy[1][-1])]
 )
-df_road_new["cost"] = df_road_new["length"]
-df_road_new["x1"] = df_road_new["geometry"].apply(lambda t: t.xy[0][0])
-df_road_new["y1"] = df_road_new["geometry"].apply(lambda t: t.xy[1][0])
-df_road_new["x2"] = df_road_new["geometry"].apply(lambda t: t.xy[0][-1])
-df_road_new["y2"] = df_road_new["geometry"].apply(lambda t: t.xy[1][-1])
-df_road_new.drop(["geometry"], axis=1, inplace=True)
-df_road_new.to_csv("./data/road_new.csv", index=False)
+df_road_split["cost"] = df_road_split["length"]
+df_road_split["x1"] = df_road_split["geometry"].apply(lambda t: t.xy[0][0])
+df_road_split["y1"] = df_road_split["geometry"].apply(lambda t: t.xy[1][0])
+df_road_split["x2"] = df_road_split["geometry"].apply(lambda t: t.xy[0][-1])
+df_road_split["y2"] = df_road_split["geometry"].apply(lambda t: t.xy[1][-1])
+df_road_split.drop(["highway", "length", "lanes", "tunnel", "bridge", "maxspeed", "width", "alley", "roundabout"], axis=1, inplace=True)
+df_road_split.to_csv("./data/road_split.csv", index=False)
 
 
 # Convert traj to new csv
@@ -75,4 +75,5 @@ df_traj["x"] = df_traj["coordinates"].apply(lambda t: ast.literal_eval(t)[0])
 df_traj["y"] = df_traj["coordinates"].apply(lambda t: ast.literal_eval(t)[1])
 df_traj["timestamp"] = df_traj["time"].apply(str_to_time)
 df_traj["id"] = df_traj["traj_id"]
+df_traj.drop(["time", "traj_id", "coordinates", "current_dis", "speeds", "holidays"], axis=1, inplace=True)
 df_traj.to_csv("./data/traj_new.csv", sep=";", index=False, index_label="id")

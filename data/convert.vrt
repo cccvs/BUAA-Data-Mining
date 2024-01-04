@@ -1,6 +1,6 @@
 <OGRVRTDataSource>
-    <OGRVRTLayer name="road_new">
-        <SrcDataSource>road_new.csv</SrcDataSource>
+    <OGRVRTLayer name="road_split">
+        <SrcDataSource>road_split.csv</SrcDataSource>
         <GeometryType>wkbLineString</GeometryType>
         <Field name="id" src="id" />
         <Field name="_uid_" src="_uid_" />
