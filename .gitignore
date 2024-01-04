@@ -2,10 +2,11 @@
 data/ubodt.txt
 data/match_traj.csv
 data/mr*
-data/node_split*
-data/road_split*
-data/traj_new*
+data/node_*
+data/road_*
+data/traj_*
 data/mr*
 test.ipynb
 jump.usr
 jump.geo
+jump.dyna

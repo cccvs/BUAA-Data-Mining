@@ -25,12 +25,16 @@ input_config.gps_point = True
 result_config = ResultConfig()
 result_config.file = "./data/mr_stmatch.csv"
 # result_config.output_config.write_opath = True
-# result_config.output_config.write_cpath = True
-# result_config.output_config.write_mgeom = True
+result_config.output_config.write_opath = True
+result_config.output_config.write_cpath = True
+result_config.output_config.write_tpath = True
+result_config.output_config.write_mgeom = True
+result_config.output_config.write_pgeom = True
+result_config.output_config.write_offset = True
+
 # result_config.output_config.write_duration = True
 # result_config.output_config.write_spdist = True
 # result_config.output_config.write_length = True
-result_config.output_config.write_all = True
 
 
 print(result_config.to_string())

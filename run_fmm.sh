@@ -1,5 +1,5 @@
 #!/bin/bash
-python ./1-data_preprocessing/convert_csv.py
+python ./1-data_preprocessing/convert_csv_split.py
 cd ./data
 bash convert.sh
 cd ..
