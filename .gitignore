@@ -1,6 +1,7 @@
 .idea
 data/ubodt.txt
-data/mr.csv
+data/match_traj.csv
+data/mr*
 data/node_split*
 data/road_split*
 data/traj_new*

@@ -9,6 +9,7 @@ graph = NetworkGraph(network)
 model = STMATCH(network, graph)
 
 k = 8
+k = 8
 gps_error = 0.5
 radius = 0.4
 vmax = 30
