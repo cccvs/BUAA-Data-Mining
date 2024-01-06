@@ -35,8 +35,9 @@ input_config.id = "id"
 input_config.gps_point = True
 # Result config
 result_config = ResultConfig()
-result_config.file = "./data/mr.csv"
+result_config.file = "./data/mr_fmm.csv"
 result_config.output_config.write_opath = True
+result_config.output_config.write_ogeom = True
 result_config.output_config.write_pgeom = True
 result_config.output_config.write_offset = True
 result_config.output_config.write_error = True

@@ -1,4 +1,5 @@
 .idea
+out*
 data/ubodt.txt
 data/match_traj.csv
 data/mr*
@@ -10,3 +11,5 @@ test.ipynb
 jump.usr
 jump.geo
 jump.dyna
+run.sh
+script.py
