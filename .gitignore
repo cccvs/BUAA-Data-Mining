@@ -1,3 +1,14 @@
+/.vscode
+/.idea
+*/visualized_data/*
+*/libcity/tmp/*
+*/libcity/cache/*
+*/libcity/__pycache__
+*/libcity/*/__pycache__
+*/libcity/data/dataset/__pycache__
+*/libcity/log/*
+*/libcity/model/*/__pycache__
+*/libcity/data/dataset/*/__pycache__
 .idea
 out*
 data/ubodt.txt
@@ -8,8 +19,7 @@ data/road_*
 data/traj_*
 data/mr*
 test.ipynb
-jump.usr
-jump.geo
-jump.dyna
-run.sh
+*jump.usr
+*jump.geo
+*jump.dyna
 script.py
