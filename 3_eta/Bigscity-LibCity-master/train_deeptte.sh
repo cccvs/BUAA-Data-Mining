@@ -1,0 +1,1 @@
+python run_model.py --task eta --model DeepTTE --dataset Beijing_Taxi_Sample --batch_size 240 --gpu_id 6 --max_epoch 400 --train_rate 0.8
